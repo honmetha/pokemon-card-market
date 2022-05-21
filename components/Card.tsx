@@ -4,7 +4,7 @@ import Button from "./Button";
 
 const Card = () => {
   return (
-    <div className="bg-steel-gray rounded-2xl p-4 pt-14 mt-32 text-white">
+    <div className="bg-steel-gray rounded-2xl p-4 pt-14 mt-60 text-white w-64">
       <div className="relative flex justify-center">
         <div className="absolute bottom-0">
           <Image

@@ -11,7 +11,10 @@ module.exports = {
         apricot: "#EA7C69",
         "ebony-clay": "#252836",
       },
+      fontFamily: {
+        poppins: ["Poppins"],
+      },
     },
   },
-  plugins: [],
+  plugins: [require("daisyui")],
 };
