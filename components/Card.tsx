@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { FiShoppingBag } from "react-icons/fi";
 
 import Button from "./Button";
 import { IPokemon } from "../types/interfaces";
@@ -23,6 +24,7 @@ const Card = ({ pokemon }: any) => {
         Cards
       </p>
       <Button className="mt-2" variant="solid">
+        <FiShoppingBag className="mr-2.5" />
         Add to cart
       </Button>
     </div>

@@ -21,9 +21,9 @@ const CartItem = () => {
         <Button variant="solid" className="w-14">
           -
         </Button>
-        <Button variant="outline" className="w-full">
+        <p className="ease-in-out duration-300 p-2 rounded-lg flex justify-center items-center w-full bg-white bg-opacity-10 border border-transparent hover:bg-transparent hover:border-white">
           2
-        </Button>
+        </p>
         <Button variant="solid" className="w-14">
           +
         </Button>

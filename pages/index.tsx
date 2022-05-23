@@ -1,24 +1,62 @@
 import type { NextPage } from "next";
 import Head from "next/head";
-import axios from "axios";
+import * as React from "react";
 
 import Card from "../components/Card";
+import Loader from "../components/Loader";
+import Select from "../components/Select";
 import Drawer from "../components/Drawer";
 import SearchInput from "../components/SearchInput";
-import { IPokemonCards, IPokemon } from "../types/interfaces";
 import DrawerTrigger from "../components/DrawerTrigger";
+import { IPokemonCards, IPokemon } from "../types/interfaces";
 
-const Home: NextPage = ({ pokemonCards }: any) => {
-  console.log("pokemonCards", pokemonCards);
+const page: number = 1;
+const pageSize: number = 20;
 
-  const { data: pokemons } = pokemonCards;
+const options = [
+  { value: "1", label: "option 1" },
+  { value: "2", label: "option 2" },
+  { value: "3", label: "option 3" },
+  { value: "4", label: "option 4" },
+];
+
+const Home: NextPage = () => {
+  const [data, setData] = React.useState<IPokemonCards | null>(null);
+  const [isLoading, setLoading] = React.useState(false);
+  const [search, setSearch] = React.useState("");
+  const [set, setSet] = React.useState("");
+  const [rarity, setRarity] = React.useState("");
+  const [type, setType] = React.useState("");
+
+  const [cart, setCart] = React.useState([]);
+  const [totalCardAmount, setTotalCardAmount] = React.useState(0);
+  const [totalPrice, setTotalPrice] = React.useState(0);
+
+  console.log("data", data);
+
+  React.useEffect(() => {
+    setLoading(true);
+    fetch(
+      `https://api.pokemontcg.io/v2/cards?page=${page}&pageSize=${pageSize}`
+    )
+      .then((res) => res.json())
+      .then((data) => {
+        setData(data);
+        setLoading(false);
+      });
+  }, [search, set, rarity, type]);
+
+  React.useEffect(() => {
+    // Set total amount and price
+  }, [cart]);
 
   return (
+    // TODO: Fix card and sidebar payment styles
     // TODO: Fix syntax (nav, body, footer, etc.)
-    // TODO: getStaticProps context
     // TODO: Fix typescript
     // TODO: Next image
-    // TODO: Outline button -> input
+    // TODO: Cart outline input
+    // TODO: Do filters need to fetch?
     // ----------------------------------------------
     // TODO: All device test (functionality & design)
     // TODO: Re-read the requirements
@@ -45,16 +83,26 @@ const Home: NextPage = ({ pokemonCards }: any) => {
           </div>
           <hr className="opacity-10" />
           {/* Filters */}
-          <div className="flex items-center justify-between py-7">
+          <div className="py-7 items-center justify-between sm:flex">
             <h2 className="text-lg font-semibold">Choose Card</h2>
-            <div>Filters</div>
+            <div className="flex text-black space-x-4 mt-6 sm:mt-0 sm:justify-end">
+              <Select placeholder="Set" options={options} />
+              <Select placeholder="Rarity" options={options} />
+              <Select placeholder="Type" options={options} />
+            </div>
           </div>
           {/* Cards */}
-          <div className="grid sm:gap-4 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-6">
-            {pokemons.map((pokemon: IPokemon) => (
-              <Card key={pokemon.id} pokemon={pokemon} />
-            ))}
-          </div>
+          {isLoading ? (
+            <div className="w-full mt-40 flex justify-center">
+              <Loader />
+            </div>
+          ) : (
+            <div className="grid sm:gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
+              {data?.data.map((pokemon: IPokemon) => (
+                <Card key={pokemon.id} pokemon={pokemon} />
+              ))}
+            </div>
+          )}
         </div>
       </Drawer>
     </div>
@@ -62,13 +110,3 @@ const Home: NextPage = ({ pokemonCards }: any) => {
 };
 
 export default Home;
-
-export async function getStaticProps() {
-  const pokemonCards: IPokemonCards = await axios
-    .get("https://api.pokemontcg.io/v2/cards?page=1&pageSize=20")
-    .then((res) => res.data);
-
-  return {
-    props: { pokemonCards },
-  };
-}
