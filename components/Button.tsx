@@ -1,21 +1,23 @@
 import * as React from "react";
 
+const button: string = "p-2 rounded-lg flex justify-center items-center";
 const variants: { [variant: string]: string } = {
-  solid: "w-full bg-white bg-opacity-10 hover:bg-opacity-20",
-  outline: "",
-  highlight: "",
+  solid: `${button} w-full bg-white bg-opacity-10 hover:bg-opacity-20`,
+  outline: `${button} w-full bg-white bg-opacity-10 border border-transparent hover:bg-transparent hover:border-white`,
+  highlight: `${button} h-12 shadow-2xl shadow-apricot bg-apricot hover:bg-apricot`,
+  link: "underline text-xs text-tower-gray",
 };
 
 interface ButtonProps extends React.HTMLAttributes<HTMLButtonElement> {
   children: React.ReactNode;
   className?: string;
-  variant: "solid" | "outline" | "highlight";
+  variant: "solid" | "outline" | "highlight" | "link";
 }
 
 const Button = ({ children, className, variant, ...rest }: ButtonProps) => {
   return (
     <button
-      className={`p-2 rounded-lg ease-in-out duration-300 ${variants[variant]} ${className}`}
+      className={`ease-in-out duration-300 ${variants[variant]} ${className}`}
       {...rest}
     >
       {children}

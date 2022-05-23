@@ -1,15 +1,24 @@
 import { InputHTMLAttributes } from "react";
 import { FiSearch } from "react-icons/fi";
 
-interface SearchInputProps extends InputHTMLAttributes<HTMLInputElement> {}
+interface SearchInputProps extends InputHTMLAttributes<HTMLInputElement> {
+  SearchInputClassName?: string;
+  inputClassName?: string;
+}
 
-const SearchInput = ({ ...props }: SearchInputProps) => {
+const SearchInput = ({
+  SearchInputClassName,
+  inputClassName,
+  ...props
+}: SearchInputProps) => {
   return (
-    <div className="pl-3 h-12 border border-gray-700 rounded-lg focus-within:border-white ease-in-out duration-300 flex items-center space-x-2">
+    <div
+      className={`pl-3 h-12 border border-gray-700 rounded-lg ease-in-out duration-300 flex items-center space-x-2 w-full sm:w-56 focus-within:border-white ${SearchInputClassName}`}
+    >
       <FiSearch className="text-xl" />
       <input
         placeholder="Search by Name"
-        className="bg-transparent focus:outline-none p-3 pl-0"
+        className={`bg-transparent w-full p-3 pl-0 focus:outline-none ${inputClassName}`}
         {...props}
       />
     </div>

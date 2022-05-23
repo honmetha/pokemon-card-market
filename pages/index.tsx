@@ -1,12 +1,12 @@
 import type { NextPage } from "next";
 import Head from "next/head";
 import axios from "axios";
-import { FiShoppingBag } from "react-icons/fi";
 
 import Card from "../components/Card";
 import Drawer from "../components/Drawer";
 import SearchInput from "../components/SearchInput";
 import { IPokemonCards, IPokemon } from "../types/interfaces";
+import DrawerTrigger from "../components/DrawerTrigger";
 
 const Home: NextPage = ({ pokemonCards }: any) => {
   console.log("pokemonCards", pokemonCards);
@@ -15,9 +15,14 @@ const Home: NextPage = ({ pokemonCards }: any) => {
 
   return (
     // TODO: Fix syntax (nav, body, footer, etc.)
-    // TODO: Button variants
     // TODO: getStaticProps context
     // TODO: Fix typescript
+    // TODO: Next image
+    // TODO: Outline button -> input
+    // ----------------------------------------------
+    // TODO: All device test (functionality & design)
+    // TODO: Re-read the requirements
+    // TODO: Write README.md
     <div className="min-h-screen bg-ebony-clay font-poppins text-white">
       <Head>
         <title>Pokemon Card Market</title>
@@ -29,19 +34,14 @@ const Home: NextPage = ({ pokemonCards }: any) => {
       </Head>
 
       <Drawer>
-        <div className="container mx-auto">
+        <div className="container mx-auto px-5">
           {/* Header, Search and Cart */}
-          <div className="flex items-center justify-between py-7">
-            <h1 className="text-2xl font-semibold">Pokemon market</h1>
-            <div className="flex items-center space-x-4">
-              <SearchInput />
-              <label
-                htmlFor="my-drawer-4"
-                className="drawer-button btn text-white shadow-2xl shadow-apricot border-transparent bg-apricot hover:border-transparent hover:bg-apricot "
-              >
-                <FiShoppingBag className="text-xl" />
-              </label>
-            </div>
+          <div className="flex items-center flex-wrap py-7 sm:flex-row-reverse">
+            <h1 className="text-2xl font-semibold sm:order-1">
+              Pokemon market
+            </h1>
+            <DrawerTrigger className="ml-auto sm:ml-4" />
+            <SearchInput SearchInputClassName="mt-6 sm:ml-auto sm:mt-0" />
           </div>
           <hr className="opacity-10" />
           {/* Filters */}
