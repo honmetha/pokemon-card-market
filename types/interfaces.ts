@@ -13,18 +13,20 @@ export interface IPokemon {
   cardmarket: ICardmarket;
   set: ISet;
 }
-
 interface IImages {
   large: string;
   small: string;
 }
-
 interface ICardmarket {
   prices: {
     averageSellPrice: number;
   };
 }
-
 interface ISet {
   total: number;
+}
+
+export interface IOptions {
+  value: string;
+  label: string;
 }

@@ -19,7 +19,7 @@ const Card = ({ pokemon }: any) => {
       </div>
       <p className="mt-4 text-center h-12">{pokemon.name}</p>
       <p className="mt-2 text-center text-tower-gray">
-        $ {pokemon.cardmarket.prices.averageSellPrice}{" "}
+        $ {pokemon.cardmarket?.prices.averageSellPrice}{" "}
         <span className="text-white opacity-10">•</span> {pokemon.set.total}{" "}
         Cards
       </p>

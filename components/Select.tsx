@@ -2,17 +2,15 @@ import * as React from "react";
 import classNames from "classnames";
 import { IoIosArrowDown } from "react-icons/io";
 
+import { IOptions } from "../types/interfaces";
+
 interface SelectProps {
   placeholder: string;
   options: IOptions[];
+  setState: (value: string) => void;
 }
 
-interface IOptions {
-  value: string;
-  label: string;
-}
-
-const Select = ({ placeholder, options }: SelectProps) => {
+const Select = ({ placeholder, options, setState }: SelectProps) => {
   const [selected, setSelected] = React.useState(placeholder);
   const [expanded, setExpanded] = React.useState(false);
   const display: string = expanded ? "block" : "hidden";
@@ -23,6 +21,7 @@ const Select = ({ placeholder, options }: SelectProps) => {
   const handleClickOption = (label: string, value: string) => {
     setSelected(label);
     console.log(value);
+    setState(value);
     close();
   };
 
@@ -43,7 +42,7 @@ const Select = ({ placeholder, options }: SelectProps) => {
           <li
             key={option.value}
             className={classNames(
-              "h-10 px-4 py-2 border border-b-0 border-gray-700 hover:bg-gray-700",
+              "min-h-10 px-4 py-2 border border-b-0 border-gray-700 hover:bg-gray-700",
               { "rounded-t-lg": index === 0 },
               { "rounded-b-lg border-b": index === options.length - 1 }
             )}
