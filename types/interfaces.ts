@@ -12,6 +12,7 @@ export interface IPokemon {
   name: string;
   cardmarket: ICardmarket;
   set: ISet;
+  quantity: number;
 }
 interface IImages {
   large: string;

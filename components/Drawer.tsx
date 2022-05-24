@@ -3,16 +3,47 @@ import { IoCloseOutline } from "react-icons/io5";
 
 import Button from "./Button";
 import CartItem from "./CartItem";
+import { IPokemon } from "../types/interfaces";
 
 interface DrawerProps {
   children: React.ReactNode;
+  cart: IPokemon[];
+  handleClearCart: () => void;
+  handleAddQuantity: (targetCard: IPokemon) => void;
+  handleMinusQuantity: (targetCard: IPokemon) => void;
 }
 
-const Drawer = ({ children }: DrawerProps) => {
+const Drawer = ({
+  children,
+  cart,
+  handleClearCart,
+  handleAddQuantity,
+  handleMinusQuantity,
+}: DrawerProps) => {
+  const [totalQuantity, setTotalQuantity] = React.useState(0);
+  const [totalPrice, setTotalPrice] = React.useState(0);
+
+  const currencyFormatter = new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+  });
+
   const handleCloseDrawer = () => {
     const drawerOverlay = document.getElementById("my-drawer-4");
     if (drawerOverlay) drawerOverlay.click();
   };
+
+  React.useEffect(() => {
+    const [newTotalQuantity, newTotalPrice] = cart.reduce(
+      (acc, item) => [
+        acc[0] + item.quantity,
+        acc[1] + item.cardmarket?.prices.averageSellPrice * item.quantity,
+      ],
+      [0, 0]
+    );
+    setTotalQuantity(newTotalQuantity);
+    setTotalPrice(newTotalPrice);
+  }, [cart]);
 
   return (
     <div className="drawer drawer-end">
@@ -29,7 +60,9 @@ const Drawer = ({ children }: DrawerProps) => {
           <div className="flex justify-between items-center drawerHeader">
             <div>
               <h2 className="text-2xl font-semibold">Cart</h2>
-              <Button variant="link">Clear all</Button>
+              <Button variant="link" onClick={handleClearCart}>
+                Clear all
+              </Button>
             </div>
             <Button
               variant="highlight"
@@ -47,20 +80,25 @@ const Drawer = ({ children }: DrawerProps) => {
           </div>
           <hr className="opacity-10 mt-1" />
           <div className="py-6 space-y-6">
-            <CartItem />
-            <CartItem />
-            <CartItem />
+            {cart.map((item) => (
+              <CartItem
+                key={item.id}
+                item={item}
+                handleAddQuantity={handleAddQuantity}
+                handleMinusQuantity={handleMinusQuantity}
+              />
+            ))}
           </div>
           {/* <!-- Footer --> */}
           <hr className="opacity-10 mt-auto" />
           <div className="pt-6 space-y-4">
             <div className="flex items-center justify-between">
               <p className="text-tower-gray text-sm">Total card amount</p>
-              <p>6</p>
+              <p>{totalQuantity}</p>
             </div>
             <div className="flex items-center justify-between">
               <p className="text-tower-gray text-sm">Total price</p>
-              <p>$ 21,030.00</p>
+              <p>{currencyFormatter.format(totalPrice)}</p>
             </div>
             <Button variant="highlight" className="w-full">
               Continue to Payment

@@ -11,12 +11,24 @@ interface ButtonProps extends React.HTMLAttributes<HTMLButtonElement> {
   children: React.ReactNode;
   className?: string;
   variant: "solid" | "highlight" | "link";
+  disabled?: boolean;
 }
 
-const Button = ({ children, className, variant, ...rest }: ButtonProps) => {
+const Button = ({
+  children,
+  className,
+  variant,
+  disabled,
+  ...rest
+}: ButtonProps) => {
+  const disabledClass: string = disabled
+    ? "cursor-not-allowed hover:bg-opacity-10 opacity-30"
+    : "";
+
   return (
     <button
-      className={`ease-in-out duration-300 ${variants[variant]} ${className}`}
+      className={`ease-in-out duration-300 ${variants[variant]} ${disabledClass} ${className}`}
+      disabled={disabled}
       {...rest}
     >
       {children}

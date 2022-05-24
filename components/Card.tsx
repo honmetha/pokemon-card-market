@@ -4,7 +4,7 @@ import { FiShoppingBag } from "react-icons/fi";
 import Button from "./Button";
 import { IPokemon } from "../types/interfaces";
 
-const Card = ({ pokemon }: any) => {
+const Card = ({ pokemon, handleAddToCart }: any) => {
   return (
     <div className="bg-steel-gray rounded-2xl p-4 pt-14 mt-60 w-full">
       <div className="relative flex justify-center">
@@ -23,7 +23,11 @@ const Card = ({ pokemon }: any) => {
         <span className="text-white opacity-10">•</span> {pokemon.set.total}{" "}
         Cards
       </p>
-      <Button className="mt-2" variant="solid">
+      <Button
+        className="mt-2"
+        variant="solid"
+        onClick={() => handleAddToCart(pokemon)}
+      >
         <FiShoppingBag className="mr-2.5" />
         Add to cart
       </Button>
