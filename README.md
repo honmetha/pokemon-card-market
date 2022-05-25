@@ -1,6 +1,6 @@
 # POKEMON CARD MARKET
 
-This web application has beened deployed using Vercel.
+<p>This web application has beened deployed using Vercel.</p>
 Please check out the demo at [https://pokemon-card-market.vercel.app/](https://pokemon-card-market.vercel.app/)
 
 ## Getting Started
@@ -16,11 +16,11 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 ## Implementation
 
-✔ Using React hooks
-✔ Using TypeScript
-✔ Having a well-structured and organized project
-✔ Commenting your code
-✔ Supporting responsive both desktop and mobile
-✘ Writing unit tests
+<p>✔ Using React hooks</p>
+<p>✔ Using TypeScript</p>
+<p>✔ Having a well-structured and organized project</p>
+<p>✔ Commenting your code</p>
+<p>✔ Supporting responsive both desktop and mobile</p>
+<p>✘ Writing unit tests</p>
 
 <img src="https://media2.giphy.com/media/vsyKKf1t22nmw/giphy.gif?cid=790b761158f5eed0eb443613bb81036b74d3686bcf43ef28&rid=giphy.gif&ct=g" alt="Drake throwing pokeballs" width="300px" />

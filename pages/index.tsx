@@ -12,8 +12,8 @@ import { IPokemonCards, IPokemon } from "../types/interfaces";
 import useFetchSelects from "../hooks/useFetchSelects";
 import useFetchSets from "../hooks/useFetchSets";
 import useDebounce from "../hooks/useDebounce";
+import Pagination from "../components/Pagination";
 
-const page: number = 1;
 const pageSize: number = 20;
 
 const Home: NextPage = () => {
@@ -24,6 +24,8 @@ const Home: NextPage = () => {
   const [rarity, setRarity] = React.useState("");
   const [type, setType] = React.useState("");
   const [cart, setCart] = React.useState<IPokemon[]>([]);
+  const [currentPage, setCurrentPage] = React.useState(1);
+  const [totalPages, setTotalPages] = React.useState(0);
   const debouncedSearchTerm = useDebounce(search, 500);
 
   const { isLoading: isLoadingTypes, data: types } = useFetchSelects(
@@ -33,7 +35,7 @@ const Home: NextPage = () => {
     `https://api.pokemontcg.io/v2/rarities`
   );
   const { isLoading: isLoadingSets, data: sets } = useFetchSets(
-    `https://api.pokemontcg.io/v2/sets?page=${page}&pageSize=${pageSize}`
+    `https://api.pokemontcg.io/v2/sets?page=1&pageSize=20`
   );
 
   const handleClearCart = () => setCart([]);
@@ -84,21 +86,17 @@ const Home: NextPage = () => {
     if (type) queryParams += ` types:"${type}"`;
 
     fetch(
-      `https://api.pokemontcg.io/v2/cards?page=${page}&pageSize=${pageSize}${queryParams}`
+      `https://api.pokemontcg.io/v2/cards?page=${currentPage}&pageSize=${pageSize}${queryParams}`
     )
       .then((res) => res.json())
       .then((data) => {
         setData(data);
+        setTotalPages(Math.ceil(data.totalCount / pageSize));
         setLoading(false);
       });
-  }, [debouncedSearchTerm, set, rarity, type]);
+  }, [debouncedSearchTerm, set, rarity, type, currentPage]);
 
   return (
-    // TODO: Pagination
-    // ----------------------------------------------
-    // TODO: All device test (functionality & design)
-    // TODO: Re-read the requirements
-    // TODO: Write README.md
     <div className="min-h-screen bg-ebony-clay font-poppins text-white">
       <Head>
         <title>Pokemon Card Market</title>
@@ -151,11 +149,11 @@ const Home: NextPage = () => {
           </div>
           {/* <!-- Search Results --> */}
           {isLoading ? (
-            <div className="w-full mt-40 flex justify-center">
+            <div className="w-full my-40 flex justify-center">
               <Loader />
             </div>
           ) : (
-            <div className="grid pb-8 sm:gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
+            <div className="grid sm:gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
               {data?.data?.map((pokemon: IPokemon) => (
                 <Card
                   key={pokemon.id}
@@ -167,6 +165,14 @@ const Home: NextPage = () => {
           )}
           {!isLoading && !data?.data?.length && (
             <p className="text-center mt-40 text-3xl">No data</p>
+          )}
+          {data?.data?.length && (
+            <Pagination
+              className="my-6 flex items-center justify-end space-x-2"
+              currentPage={currentPage}
+              totalPages={totalPages}
+              setCurrentPage={setCurrentPage}
+            />
           )}
         </div>
       </Drawer>
