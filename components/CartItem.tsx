@@ -1,6 +1,8 @@
 import Button from "./Button";
+import Image from "next/image";
 
 import { IPokemon } from "../types/interfaces";
+import { currencyFormatter } from "../utils/currencyFormatter";
 
 interface CartItemProps {
   item: IPokemon;
@@ -16,17 +18,24 @@ const CartItem = ({
   return (
     <div className="space-y-2.5">
       <div className="flex space-x-2 text-xs">
-        <div className="w-14">
-          <img src={item.images.small} alt="" width="100%" />
+        <div className="relative w-14 h-14">
+          <Image
+            alt={item.name}
+            src={item.images.small}
+            layout="fill"
+            objectFit="contain"
+          />
         </div>
         <div className="w-full space-y-1">
           <p>{item.name}</p>
           <p className="text-tower-gray">
-            $ {item.cardmarket?.prices.averageSellPrice}
+            {currencyFormatter(item.cardmarket?.prices?.averageSellPrice || 0)}
           </p>
         </div>
-        <p className="w-14">
-          $ {item.quantity * item.cardmarket?.prices.averageSellPrice}
+        <p className="w-14 whitespace-nowrap">
+          {currencyFormatter(
+            item.quantity * (item.cardmarket?.prices?.averageSellPrice || 0)
+          )}
         </p>
       </div>
       <div className="flex space-x-2 text-lg">

@@ -4,6 +4,7 @@ import { IoCloseOutline } from "react-icons/io5";
 import Button from "./Button";
 import CartItem from "./CartItem";
 import { IPokemon } from "../types/interfaces";
+import { currencyFormatter } from "../utils/currencyFormatter";
 
 interface DrawerProps {
   children: React.ReactNode;
@@ -23,11 +24,6 @@ const Drawer = ({
   const [totalQuantity, setTotalQuantity] = React.useState(0);
   const [totalPrice, setTotalPrice] = React.useState(0);
 
-  const currencyFormatter = new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "USD",
-  });
-
   const handleCloseDrawer = () => {
     const drawerOverlay = document.getElementById("my-drawer-4");
     if (drawerOverlay) drawerOverlay.click();
@@ -37,7 +33,8 @@ const Drawer = ({
     const [newTotalQuantity, newTotalPrice] = cart.reduce(
       (acc, item) => [
         acc[0] + item.quantity,
-        acc[1] + item.cardmarket?.prices.averageSellPrice * item.quantity,
+        acc[1] +
+          (item.cardmarket?.prices?.averageSellPrice || 0) * item.quantity,
       ],
       [0, 0]
     );
@@ -98,7 +95,7 @@ const Drawer = ({
             </div>
             <div className="flex items-center justify-between">
               <p className="text-tower-gray text-sm">Total price</p>
-              <p>{currencyFormatter.format(totalPrice)}</p>
+              <p>{currencyFormatter(totalPrice)}</p>
             </div>
             <Button variant="highlight" className="w-full">
               Continue to Payment

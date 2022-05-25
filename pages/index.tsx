@@ -36,9 +36,6 @@ const Home: NextPage = () => {
     `https://api.pokemontcg.io/v2/sets?page=${page}&pageSize=${pageSize}`
   );
 
-  // console.log("data", data);
-  console.log("cart", cart);
-
   const handleClearCart = () => setCart([]);
   const handleAddToCart = (selectedCard: IPokemon) => {
     const existedItemInCart: IPokemon | undefined = cart.find(
@@ -81,7 +78,7 @@ const Home: NextPage = () => {
   React.useEffect(() => {
     setLoading(true);
     let queryParams: string = "&q=";
-    if (debouncedSearchTerm) queryParams += ` name:"${debouncedSearchTerm}"`;
+    if (debouncedSearchTerm) queryParams += ` name:"${debouncedSearchTerm}*"`;
     if (set) queryParams += ` set.id:"${set}"`;
     if (rarity) queryParams += ` rarity:"${rarity}"`;
     if (type) queryParams += ` types:"${type}"`;
@@ -97,18 +94,10 @@ const Home: NextPage = () => {
   }, [debouncedSearchTerm, set, rarity, type]);
 
   return (
-    // TODO: Fix styles on card and sidebar payment
-    // TODO: Fix syntax (nav, body, footer, etc.)
-    // TODO: Fix typescript
-    // TODO: Next image
-    // TODO: Cart outline input
-    // TODO: Responsiveness of select
-    // TODO: Warnings in console
-    // TODO: Shared currency formatter
+    // TODO: Pagination
     // ----------------------------------------------
     // TODO: All device test (functionality & design)
     // TODO: Re-read the requirements
-    // TODO: Deployment
     // TODO: Write README.md
     <div className="min-h-screen bg-ebony-clay font-poppins text-white">
       <Head>
@@ -117,7 +106,7 @@ const Home: NextPage = () => {
           name="description"
           content="The best Pokemon card selling platform."
         />
-        <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" href="/pokeball.png" />
       </Head>
 
       <Drawer
@@ -127,8 +116,8 @@ const Home: NextPage = () => {
         handleMinusQuantity={handleMinusQuantity}
       >
         <div className="container mx-auto px-5">
-          {/* <!-- Navigation --> */}
-          <div className="flex items-center flex-wrap py-7 sm:flex-row-reverse">
+          {/* <!-- Header --> */}
+          <header className="flex items-center flex-wrap py-7 sm:flex-row-reverse">
             <h1 className="text-2xl font-semibold sm:order-1">
               Pokemon market
             </h1>
@@ -137,7 +126,7 @@ const Home: NextPage = () => {
               SearchInputClassName="mt-6 sm:ml-auto sm:mt-0"
               onChange={(e) => setSearch(e.target.value)}
             />
-          </div>
+          </header>
           <hr className="opacity-10" />
           {/* <!-- Filters --> */}
           <div className="py-7 items-center justify-between sm:flex">
@@ -160,7 +149,7 @@ const Home: NextPage = () => {
               />
             </div>
           </div>
-          {/* <!-- Cards --> */}
+          {/* <!-- Search Results --> */}
           {isLoading ? (
             <div className="w-full mt-40 flex justify-center">
               <Loader />

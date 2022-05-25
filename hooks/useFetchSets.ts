@@ -13,7 +13,7 @@ const useFetchSelects = (url: string) => {
       try {
         const response = await fetch(url);
         const data = await response.json();
-        const newData = data.data.map((set: any) => {
+        const newData = data.data.map((set: { name: string; id: string }) => {
           return { label: set.name, value: set.id };
         });
 
