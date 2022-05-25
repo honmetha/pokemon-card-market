@@ -18,7 +18,7 @@ const pageSize: number = 20;
 
 const Home: NextPage = () => {
   const [data, setData] = React.useState<IPokemonCards | null>(null);
-  const [isLoading, setLoading] = React.useState(false);
+  const [isLoading, setLoading] = React.useState(true);
   const [search, setSearch] = React.useState("");
   const [set, setSet] = React.useState("");
   const [rarity, setRarity] = React.useState("");
