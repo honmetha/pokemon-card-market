@@ -1,6 +1,6 @@
 # POKEMON CARD MARKET
 
-<p>This web application has beened deployed using Vercel.</p>
+<p>This web application has been deployed using Vercel.</p>
 
 Please check out the demo at [https://pokemon-card-market.vercel.app/](https://pokemon-card-market.vercel.app/)
 
