@@ -12,6 +12,7 @@ import { IPokemonCards, IPokemon } from "../types/interfaces";
 import useFetchSelects from "../hooks/useFetchSelects";
 import useFetchSets from "../hooks/useFetchSets";
 import useDebounce from "../hooks/useDebounce";
+import usePrevious from "../hooks/usePrevious";
 import Pagination from "../components/Pagination";
 
 const pageSize: number = 20;
@@ -27,6 +28,7 @@ const Home: NextPage = () => {
   const [currentPage, setCurrentPage] = React.useState(1);
   const [totalPages, setTotalPages] = React.useState(0);
   const debouncedSearchTerm = useDebounce(search, 500);
+  const prevAmount = usePrevious({ currentPage });
 
   const { isLoading: isLoadingTypes, data: types } = useFetchSelects(
     `https://api.pokemontcg.io/v2/types`
@@ -78,22 +80,33 @@ const Home: NextPage = () => {
   };
 
   React.useEffect(() => {
-    setLoading(true);
-    let queryParams: string = "&q=";
-    if (debouncedSearchTerm) queryParams += ` name:"${debouncedSearchTerm}*"`;
-    if (set) queryParams += ` set.id:"${set}"`;
-    if (rarity) queryParams += ` rarity:"${rarity}"`;
-    if (type) queryParams += ` types:"${type}"`;
+    const fetchPokemons = () => {
+      setLoading(true);
 
-    fetch(
-      `https://api.pokemontcg.io/v2/cards?page=${currentPage}&pageSize=${pageSize}${queryParams}`
-    )
-      .then((res) => res.json())
-      .then((data) => {
-        setData(data);
-        setTotalPages(Math.ceil(data.totalCount / pageSize));
-        setLoading(false);
-      });
+      let queryParams: string = "&q=";
+      if (debouncedSearchTerm) queryParams += ` name:"${debouncedSearchTerm}*"`;
+      if (set) queryParams += ` set.id:"${set}"`;
+      if (rarity) queryParams += ` rarity:"${rarity}"`;
+      if (type) queryParams += ` types:"${type}"`;
+
+      const isSearchFiltersChanged: boolean =
+        prevAmount?.currentPage === currentPage && currentPage !== 1;
+      if (isSearchFiltersChanged) setCurrentPage(1);
+      const newCurrentPage: number = isSearchFiltersChanged ? 1 : currentPage;
+
+      fetch(
+        `https://api.pokemontcg.io/v2/cards?page=${newCurrentPage}&pageSize=${pageSize}${queryParams}`
+      )
+        .then((res) => res.json())
+        .then((data) => {
+          setData(data);
+          setTotalPages(Math.ceil(data.totalCount / pageSize));
+          setLoading(false);
+        });
+    };
+
+    fetchPokemons();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debouncedSearchTerm, set, rarity, type, currentPage]);
 
   return (
@@ -166,7 +179,7 @@ const Home: NextPage = () => {
           {!isLoading && !data?.data?.length && (
             <p className="text-center mt-40 text-3xl">No data</p>
           )}
-          {data?.data?.length && (
+          {data && data.data?.length > 0 && (
             <Pagination
               className="my-6 flex items-center justify-end space-x-2"
               currentPage={currentPage}
