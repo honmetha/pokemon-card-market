@@ -4,7 +4,7 @@
 
 Please check out the demo at [https://pokemon-card-market.vercel.app/](https://pokemon-card-market.vercel.app/)
 
-## Getting Started
+## 📦 Getting Started
 
 Clone the project and run the development server:
 
@@ -15,7 +15,7 @@ yarn dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-## Implementation
+## 🛠 Implementation
 
 <p>✔ Using React hooks</p>
 <p>✔ Using TypeScript</p>
